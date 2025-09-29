@@ -254,14 +254,16 @@ async def process_endpoint_compat(
     race: int = Form(1),
 ):
     return await process_endpoint(file, do_gray, do_blur, ksize, num_threads, sync, race)
-
-# Mount static under /app so it never shadows /api/* or /health
-app.mount("/app", StaticFiles(directory="static", html=True), name="static")
-
 @app.get("/")
 def root():
     return {"message": "Welcome"}
 
+# Mount static under /app so it never shadows /api/* or /health
+app.mount("/app", StaticFiles(directory="static", html=True), name="static")
+
+@app.get("/debug")
+def debug():
+    return {"status": "ok"}
 
 
 
